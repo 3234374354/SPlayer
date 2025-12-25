@@ -129,6 +129,7 @@ declare module 'vue' {
     OtherSetting: typeof import('./src/components/Setting/OtherSetting.vue')['default']
     PersonalFM: typeof import('./src/components/Player/PersonalFM.vue')['default']
     PlayerBackground: typeof import('./src/components/Player/PlayerBackground.vue')['default']
+    PlayerCast: typeof import('./src/components/Player/PlayerCast.vue')['default']
     PlayerComment: typeof import('./src/components/Player/PlayerComment.vue')['default']
     PlayerControl: typeof import('./src/components/Player/PlayerControl.vue')['default']
     PlayerCover: typeof import('./src/components/Player/PlayerCover.vue')['default']

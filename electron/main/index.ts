@@ -9,6 +9,8 @@ import { existsSync, mkdirSync } from "fs";
 import { join } from "path";
 import { trySendCustomProtocol } from "./utils/protocol";
 import { SocketService } from "./services/SocketService";
+// 导入时自动初始化投屏服务（使用副作用导入确保不被 tree-shaking）
+import "./services/CastService";
 import initAppServer from "../server";
 import loadWindow from "./windows/load-window";
 import mainWindow from "./windows/main-window";

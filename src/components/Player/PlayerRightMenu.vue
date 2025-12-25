@@ -5,6 +5,7 @@
         <SvgIcon name="DesktopLyric2" :depth="statusStore.showDesktopLyric ? 1 : 3" />
       </div>
     </n-badge>
+
     <!-- 其他控制 -->
     <n-dropdown
       :options="controlsOptions"
@@ -65,6 +66,8 @@
         <SvgIcon name="PlayList" />
       </div>
     </n-badge>
+    <!-- 投屏弹窗 -->
+    <PlayerCast v-model:show="showCastModal" />
   </n-flex>
 </template>
 
@@ -81,6 +84,9 @@ const musicStore = useMusicStore();
 const statusStore = useStatusStore();
 const settingStore = useSettingStore();
 const player = usePlayerController();
+
+// 投屏弹窗状态
+const showCastModal = ref(false);
 
 // 播放模式数据
 const playModeOptions: DropdownOption[] = [
@@ -101,33 +107,47 @@ const playModeOptions: DropdownOption[] = [
   },
 ];
 
-// 其他控制：播放速度下拉菜单
-const controlsOptions = computed<DropdownOption[]>(() => [
-  {
-    label: "均衡器",
-    key: "equalizer",
-    icon: renderIcon("Eq"),
-    props: {
-      onClick: () => openEqualizer(),
+// 其他控制：下拉菜单
+const controlsOptions = computed<DropdownOption[]>(() => {
+  const options: DropdownOption[] = [
+    {
+      label: "均衡器",
+      key: "equalizer",
+      icon: renderIcon("Eq"),
+      props: {
+        onClick: () => openEqualizer(),
+      },
     },
-  },
-  {
-    label: "自动关闭",
-    key: "autoClose",
-    icon: renderIcon("TimeAuto"),
-    props: {
-      onClick: () => openAutoClose(),
+    {
+      label: "自动关闭",
+      key: "autoClose",
+      icon: renderIcon("TimeAuto"),
+      props: {
+        onClick: () => openAutoClose(),
+      },
     },
-  },
-  {
-    label: "播放速度",
-    key: "rate",
-    icon: renderIcon("PlayRate"),
-    props: {
-      onClick: () => openChangeRate(),
+    {
+      label: "播放速度",
+      key: "rate",
+      icon: renderIcon("PlayRate"),
+      props: {
+        onClick: () => openChangeRate(),
+      },
     },
-  },
-]);
+  ];
+  // 仅在 Electron 环境下显示投屏
+  if (isElectron) {
+    options.push({
+      label: "投屏",
+      key: "cast",
+      icon: renderIcon("Cast"),
+      props: {
+        onClick: () => (showCastModal.value = true),
+      },
+    });
+  }
+  return options;
+});
 </script>
 
 <style scoped lang="scss">

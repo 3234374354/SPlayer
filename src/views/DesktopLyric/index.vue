@@ -465,9 +465,9 @@ const onDocPointerDown = async (event: PointerEvent) => {
   if (target.closest(".menu-btn")) return;
   dragState.isDragging = true;
   const { x, y } = await window.electron.ipcRenderer.invoke("get-window-bounds");
-  const { width, height } = await window.api.store.get("lyric");
-  const safeWidth = Number(width) > 0 ? Number(width) : 800;
-  const safeHeight = Number(height) > 0 ? Number(height) : 136;
+  const lyricData = (await window.api.store.get("lyric")) as { width?: number; height?: number } | undefined;
+  const safeWidth = Number(lyricData?.width) > 0 ? Number(lyricData?.width) : 800;
+  const safeHeight = Number(lyricData?.height) > 0 ? Number(lyricData?.height) : 136;
   // 如果开启了限制边界，在拖拽开始时预先获取一次屏幕范围
   if (lyricConfig.limitBounds) {
     const bounds = await window.electron.ipcRenderer.invoke("get-virtual-screen-bounds");
